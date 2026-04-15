@@ -182,22 +182,211 @@ if (form) {
 
 // ===== ACTIVE NAV LINK HIGHLIGHTING =====
 const sections = document.querySelectorAll('section[id]');
-const navItems = document.querySelectorAll('.navbar__links a:not(.btn)');
+const navItems = document.querySelectorAll('.navbar__links a:not(.btn--nav)');
 
-const sectionObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const id = entry.target.getAttribute('id');
-      navItems.forEach(item => {
-        item.style.color = item.getAttribute('href') === `#${id}`
-          ? 'var(--gold)'
-          : '';
-      });
+function setActiveNav() {
+  const scrollY = window.scrollY + 100;
+  let currentId = '';
+
+  sections.forEach(section => {
+    if (section.offsetTop <= scrollY) {
+      currentId = section.getAttribute('id');
     }
   });
-}, { threshold: 0.4 });
 
-sections.forEach(s => sectionObserver.observe(s));
+  navItems.forEach(item => {
+    const isActive = item.getAttribute('href') === `#${currentId}`;
+    item.classList.toggle('nav--active', isActive);
+  });
+}
+
+window.addEventListener('scroll', setActiveNav, { passive: true });
+setActiveNav();
+
+// ===== GALÉRIA SZŰRŐ =====
+(function () {
+  const filterBtns = document.querySelectorAll('.gallery__filter');
+  const items      = document.querySelectorAll('.gallery__item[data-cat]');
+  const emptyMsg   = document.getElementById('galleryEmpty');
+  const grid       = document.getElementById('galleryGrid');
+  if (!filterBtns.length) return;
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Aktív gomb csere
+      filterBtns.forEach(b => b.classList.remove('gallery__filter--active'));
+      btn.classList.add('gallery__filter--active');
+
+      const filter = btn.dataset.filter;
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        const match = filter === 'minden' || item.dataset.cat === filter;
+        if (match) {
+          // Megjelenítés animációval, eltolt időzítéssel
+          item.style.position  = '';
+          item.style.visibility= '';
+          item.classList.remove('gallery--hidden');
+          item.classList.remove('gallery--fadeIn');
+          // Egy tick szünet az animáció újraindításához
+          requestAnimationFrame(() => {
+            item.style.animationDelay = `${visibleCount * 50}ms`;
+            item.classList.add('gallery--fadeIn');
+          });
+          visibleCount++;
+        } else {
+          item.classList.add('gallery--hidden');
+          item.classList.remove('gallery--fadeIn');
+        }
+      });
+
+      // Üres állapot
+      emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+      grid.style.display     = visibleCount === 0 ? 'none'  : 'grid';
+    });
+  });
+})();
+
+// ===== ÁRBECSLŐ KALKULÁTOR =====
+(function () {
+  const step1    = document.getElementById('step1');
+  const step2    = document.getElementById('step2');
+  const step3    = document.getElementById('step3');
+  const result   = document.getElementById('calcResult');
+  const progress = document.getElementById('calcProgress');
+  const slider   = document.getElementById('areaSlider');
+  const areaInp  = document.getElementById('areaInput');
+  const unitLbl  = document.getElementById('unitLabel');
+  const areaUnit = document.getElementById('areaUnit');
+  const resPrice = document.getElementById('resultPrice');
+  const resSub   = document.getElementById('resultSub');
+  const breakdown= document.getElementById('breakdown');
+  const resetBtn = document.getElementById('calcReset');
+
+  if (!step1) return;
+
+  let state = { type: null, laborMin: 0, laborMax: 0, area: 30, matMin: 0, matMax: 0, unit: 'm²' };
+
+  function fmt(n) {
+    return new Intl.NumberFormat('hu-HU').format(Math.round(n));
+  }
+  function setProgress(pct) {
+    progress.style.width = pct + '%';
+  }
+
+  // Slider ↔ input szinkron
+  slider.addEventListener('input', () => {
+    areaInp.value = slider.value;
+    state.area = +slider.value;
+    updateSliderFill();
+  });
+  areaInp.addEventListener('input', () => {
+    const v = Math.max(1, Math.min(999, +areaInp.value || 1));
+    slider.value = Math.min(v, 200);
+    state.area = v;
+    updateSliderFill();
+  });
+  function updateSliderFill() {
+    const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = `linear-gradient(to right, var(--gold) ${pct}%, var(--stone-2) ${pct}%)`;
+  }
+  updateSliderFill();
+
+  // Lépés 1 — típus választás
+  document.querySelectorAll('.calc__type').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.calc__type').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.type     = btn.dataset.type;
+      state.laborMin = +btn.dataset.laborMin;
+      state.laborMax = +btn.dataset.laborMax;
+      state.unit     = state.type === 'lepcso' ? 'fm' : 'm²';
+      unitLbl.textContent = state.unit;
+      areaUnit.textContent = state.unit;
+      // Lépcsőnél kisebb max
+      if (state.type === 'lepcso') { slider.max = 50; areaInp.value = Math.min(state.area, 50); }
+      else { slider.max = 200; }
+
+      step2.classList.remove('calc__step--hidden');
+      step2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setProgress(33);
+    });
+  });
+
+  // Lépés 3 — anyagminőség
+  document.querySelectorAll('.calc__quality').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.calc__quality').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.matMin = +btn.dataset.matMin;
+      state.matMax = +btn.dataset.matMax;
+      showResult();
+      setProgress(100);
+    });
+  });
+
+  // Lépés 2 → 3 továbblépés (ha inputból módosít)
+  step2.addEventListener('change', () => {
+    if (step3.classList.contains('calc__step--hidden')) {
+      step3.classList.remove('calc__step--hidden');
+      step3.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setProgress(66);
+    }
+  });
+  // Kattintás a sliderrre is triggerel
+  slider.addEventListener('click', () => {
+    if (step3.classList.contains('calc__step--hidden')) {
+      step3.classList.remove('calc__step--hidden');
+      step3.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setProgress(66);
+    }
+  });
+
+  function showResult() {
+    const a = state.area;
+    const totalMin = (state.laborMin + state.matMin) * a;
+    const totalMax = (state.laborMax + state.matMax) * a;
+    const laborRangeMin = state.laborMin * a;
+    const laborRangeMax = state.laborMax * a;
+    const matRangeMin   = state.matMin * a;
+    const matRangeMax   = state.matMax * a;
+
+    resPrice.textContent = `${fmt(totalMin)} – ${fmt(totalMax)} Ft`;
+    resSub.textContent   = `${a} ${state.unit} • munkadíj + anyag`;
+
+    breakdown.innerHTML = `
+      <div class="calc__breakdown-row">
+        <span>Terület</span>
+        <span>${a} ${state.unit}</span>
+      </div>
+      <div class="calc__breakdown-row">
+        <span>Munkadíj (becsült)</span>
+        <span>${fmt(laborRangeMin)} – ${fmt(laborRangeMax)} Ft</span>
+      </div>
+      <div class="calc__breakdown-row">
+        <span>Anyagköltség (becsült)</span>
+        <span>${fmt(matRangeMin)} – ${fmt(matRangeMax)} Ft</span>
+      </div>
+    `;
+
+    result.classList.remove('calc__step--hidden');
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Reset
+  resetBtn.addEventListener('click', () => {
+    document.querySelectorAll('.calc__type, .calc__quality').forEach(b => b.classList.remove('selected'));
+    state = { type: null, laborMin: 0, laborMax: 0, area: 30, matMin: 0, matMax: 0, unit: 'm²' };
+    slider.value = 30;
+    areaInp.value = 30;
+    updateSliderFill();
+    step2.classList.add('calc__step--hidden');
+    step3.classList.add('calc__step--hidden');
+    result.classList.add('calc__step--hidden');
+    setProgress(0);
+    step1.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+})();
 
 // ===== TILE PATTERN HOVER =====
 const tilePattern = document.querySelector('.tile-pattern');

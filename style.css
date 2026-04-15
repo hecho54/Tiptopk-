@@ -204,6 +204,7 @@ button { border: none; cursor: pointer; font-family: inherit; }
   letter-spacing: 0.02em;
 }
 .navbar__links a:not(.btn--nav):hover { color: var(--gold); }
+.navbar__links a.nav--active { color: var(--gold); }
 
 .burger {
   display: none;
@@ -527,7 +528,339 @@ button { border: none; cursor: pointer; font-family: inherit; }
   line-height: 1.7;
 }
 
+/* ===== CALCULATOR ===== */
+.calc__card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.calc__step {
+  padding: 40px 48px;
+  border-bottom: 1px solid var(--stone-2);
+  transition: opacity 0.3s ease;
+}
+.calc__step:last-of-type { border-bottom: none; }
+.calc__step--hidden { display: none; }
+
+.calc__step-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.calc__step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--gold);
+  color: var(--dark);
+  border-radius: 50%;
+  font-size: 0.82rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.calc__unit-label {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  background: var(--stone);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* Típus gombok */
+.calc__types {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.calc__type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 12px;
+  background: var(--stone);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--trans);
+  font-family: inherit;
+}
+.calc__type:hover {
+  background: var(--stone-2);
+  border-color: var(--gold-light);
+}
+.calc__type.selected {
+  background: rgba(201,168,76,0.1);
+  border-color: var(--gold);
+}
+.calc__type-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.calc__type-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.calc__type-unit {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Slider */
+.calc__slider-wrap { display: flex; flex-direction: column; gap: 12px; }
+.calc__slider {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, var(--gold) 0%, var(--stone-2) 0%);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+.calc__slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--white);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.calc__slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 3px solid var(--white);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.calc__slider-vals {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.calc__area-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--dark);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+}
+.calc__area-input {
+  width: 64px;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+  font-family: var(--font-head);
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.calc__area-input::-webkit-outer-spin-button,
+.calc__area-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.calc__area-unit {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+/* Minőség gombok */
+.calc__qualities {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.calc__quality {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 16px;
+  background: var(--stone);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: all var(--trans);
+  position: relative;
+}
+.calc__quality:hover { background: var(--stone-2); border-color: var(--gold-light); }
+.calc__quality.selected { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+.calc__quality--popular { border-color: var(--gold-light); }
+.calc__q-badge {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+.calc__q-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 6px;
+}
+.calc__q-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+.calc__q-price { font-size: 0.78rem; font-weight: 600; color: var(--gold-dark); margin-top: 4px; }
+
+/* Eredmény */
+.calc__result {
+  background: var(--dark);
+  padding: 40px 48px;
+}
+.calc__result-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.calc__result-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.calc__result-price {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+}
+.calc__result-sub {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  margin-top: 6px;
+}
+.calc__result-note {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  margin-top: 16px;
+  line-height: 1.5;
+  font-style: italic;
+}
+.calc__breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.calc__breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.calc__breakdown-row:last-child { border-bottom: none; padding-bottom: 0; }
+.calc__breakdown-row span:first-child { color: rgba(255,255,255,0.55); }
+.calc__breakdown-row span:last-child { color: var(--white); font-weight: 600; }
+.calc__cta { width: 100%; justify-content: center; margin-bottom: 12px; }
+.calc__reset {
+  width: 100%;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.5);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all var(--trans);
+}
+.calc__reset:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.8); }
+
+/* Progress bar */
+.calc__progress {
+  height: 4px;
+  background: var(--stone-2);
+}
+.calc__progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* Mobil */
+@media (max-width: 768px) {
+  .calc__step { padding: 28px 20px; }
+  .calc__types { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .calc__type { padding: 16px 8px; }
+  .calc__type-icon { font-size: 1.3rem; }
+  .calc__qualities { grid-template-columns: 1fr; gap: 10px; }
+  .calc__quality { flex-direction: row; align-items: center; padding: 16px; }
+  .calc__q-badge { top: -10px; }
+  .calc__result { padding: 28px 20px; }
+  .calc__result-inner { grid-template-columns: 1fr; gap: 28px; }
+  .calc__result-price { font-size: 2rem; }
+}
+
 /* ===== GALLERY ===== */
+
+/* Szűrő gombok */
+.gallery__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+.gallery__filter {
+  padding: 10px 22px;
+  border-radius: 100px;
+  border: 1.5px solid var(--stone-2);
+  background: var(--white);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--trans);
+  letter-spacing: 0.02em;
+}
+.gallery__filter:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
+.gallery__filter--active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--dark);
+  font-weight: 700;
+}
+
+/* Rács */
 .gallery__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -537,11 +870,24 @@ button { border: none; cursor: pointer; font-family: inherit; }
   border-radius: var(--radius-sm);
   overflow: hidden;
   aspect-ratio: 3/4;
+  /* Szűrő animáció */
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
-.gallery__item--large {
-  grid-column: 1 / 3;
-  aspect-ratio: 16/10;
+.gallery__item.gallery--hidden {
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
 }
+.gallery__item.gallery--fadeIn {
+  animation: galleryIn 0.4s ease forwards;
+}
+@keyframes galleryIn {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
 .gallery__link {
   display: block;
   position: relative;
@@ -563,11 +909,12 @@ button { border: none; cursor: pointer; font-family: inherit; }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%);
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%);
   opacity: 0;
   transition: opacity var(--trans);
 }
 .gallery__link:hover::after { opacity: 1; }
+
 .gallery__label {
   position: absolute;
   bottom: 14px;
@@ -590,9 +937,33 @@ button { border: none; cursor: pointer; font-family: inherit; }
   opacity: 1;
   transform: translateY(0);
 }
-.gallery__more {
+
+/* Kategória tag (jobb felső sarok) */
+.gallery__cat-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dark);
+  background: var(--gold);
+  padding: 3px 8px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity var(--trans);
+}
+.gallery__link:hover .gallery__cat-tag { opacity: 1; }
+
+/* Üres állapot */
+.gallery__empty {
   text-align: center;
-  margin-top: 40px;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-style: italic;
 }
 
 /* ===== WHY US ===== */
@@ -893,9 +1264,24 @@ a.contact__value:hover { color: var(--gold); }
   transform: translateY(0);
 }
 
-/* ===== RESPONSIVE ===== */
 /* =============================================
-   TABLET — max 1024px
+   GLOBÁLIS MOBIL ALAPOK
+   ============================================= */
+
+/* Érintési kiemelés eltávolítása */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* Vízszintes görgetés megelőzése */
+html, body { overflow-x: hidden; max-width: 100%; }
+
+/* Érintési célpontok min. 44px */
+button, a, input[type="submit"], select {
+  min-height: 44px;
+  touch-action: manipulation; /* dupla tap zoom letiltása */
+}
+
+/* =============================================
+   TABLET — 1024px
    ============================================= */
 @media (max-width: 1024px) {
   .stats__grid { grid-template-columns: repeat(2, 1fr); }
@@ -904,66 +1290,89 @@ a.contact__value:hover { color: var(--gold); }
   .why__grid { grid-template-columns: repeat(2, 1fr); }
   .footer__inner { grid-template-columns: 1fr 1fr; gap: 40px; }
   .gallery__grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Kalkulátor */
+  .calc__card { max-width: 100%; }
+  .calc__types { grid-template-columns: repeat(3, 1fr); }
+  .calc__qualities { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* =============================================
-   MOBIL — max 768px
+   MOBIL — 768px
    ============================================= */
 @media (max-width: 768px) {
 
-  /* Alap */
-  .section { padding: 56px 0; }
+  /* ---- ALAP ---- */
+  .section { padding: 52px 0; }
   .container { padding: 0 16px; }
+  .section__title { font-size: clamp(1.7rem, 6vw, 2.2rem); }
+  .section__subtitle { font-size: 0.95rem; }
+  .section__header { margin-bottom: 36px; }
 
   /* ---- NAVBAR ---- */
   .navbar { padding: 14px 0; }
-  /* backdrop-filter mobilon törné a position:fixed gyermekeket — kikapcsoljuk */
   .navbar,
   .navbar.scrolled {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
-  .navbar.scrolled { padding: 10px 0; background: rgba(20,20,20,0.98); }
+  .navbar.scrolled { padding: 10px 0; background: rgba(18,18,18,0.99); }
 
   .navbar__links {
     position: fixed;
-    inset: 0;
-    background: rgba(20,20,20,0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #111;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 0;
     transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
     z-index: 999;
-    padding: 40px 24px;
+    padding: 72px 32px 48px;
+    overflow-y: auto;
   }
   .navbar__links.open { transform: translateX(0); }
+  .navbar__links::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
   .navbar__links a {
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.85);
-    padding: 14px 0;
+    font-size: 1.35rem;
+    font-weight: 400;
+    font-family: var(--font-head);
+    color: rgba(255,255,255,0.72);
+    padding: 16px 0;
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    letter-spacing: 0.01em;
+    transition: color 0.2s ease;
   }
-  .navbar__links a:last-child { border-bottom: none; }
+  .navbar__links a:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+  .navbar__links a:not(.btn--nav):hover,
+  .navbar__links a.nav--active { color: var(--gold); }
   .navbar__links .btn--nav {
+    font-family: var(--font-body);
     background: var(--gold);
     color: var(--dark);
     border-radius: var(--radius-sm);
-    padding: 16px 40px;
-    margin-top: 16px;
+    padding: 16px 0;
+    margin-top: 24px;
     font-size: 1rem;
-    border-bottom: none;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: none;
+    width: 100%;
+    max-width: 260px;
   }
 
   .burger {
     display: flex;
-    z-index: 1000;
+    z-index: 1001;
     position: relative;
     padding: 8px;
     min-width: 44px;
@@ -971,184 +1380,200 @@ a.contact__value:hover { color: var(--gold); }
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    gap: 5px;
   }
-  /* Burger → X animáció */
   .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .burger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   .burger span { transition: all 0.3s ease; }
+  .burger.active span { background: var(--white); width: 26px; }
 
   /* ---- HERO ---- */
   .hero {
     min-height: 100svh;
     background-position: center center;
     align-items: flex-end;
-    padding-bottom: 80px;
+    padding-bottom: 72px;
   }
-  .hero__content {
-    padding-top: 80px;
-    text-align: center;
-  }
-  .hero__title {
-    font-size: clamp(2.4rem, 10vw, 3.2rem);
-    line-height: 1.1;
-  }
-  .hero__subtitle {
-    font-size: 1rem;
-    max-width: 100%;
-  }
-  .hero__actions {
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-  }
+  .hero__content { padding-top: 72px; text-align: center; }
+  .hero__title { font-size: clamp(2.2rem, 10vw, 3rem); line-height: 1.1; }
+  .hero__subtitle { font-size: 1rem; max-width: 100%; }
+  .hero__eyebrow { font-size: 0.75rem; }
+  .hero__actions { flex-direction: column; gap: 10px; align-items: center; }
   .hero__actions .btn {
     width: 100%;
-    max-width: 320px;
+    max-width: 300px;
     justify-content: center;
-    padding: 16px 24px;
+    padding: 16px 20px;
     font-size: 1rem;
   }
   .hero__scroll { display: none; }
 
   /* ---- STATS ---- */
-  .stats { padding: 40px 0; }
-  .stats__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0;
-  }
+  .stats { padding: 36px 0; }
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 0; }
   .stat {
-    padding: 24px 16px;
+    padding: 22px 12px;
     border-right: 1px solid rgba(255,255,255,0.08);
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
   .stat:nth-child(2) { border-right: none; }
   .stat:nth-child(3) { border-bottom: none; }
   .stat:nth-child(4) { border-right: none; border-bottom: none; }
-  .stat__number { font-size: 2.8rem; }
-  .stat__label { font-size: 0.75rem; }
+  .stat__number { font-size: 2.6rem; }
+  .stat__plus { font-size: 1.5rem; }
+  .stat__label { font-size: 0.72rem; }
 
   /* ---- ABOUT ---- */
-  .about__grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-  .about__image-wrap {
-    max-width: 100%;
-    margin: 0;
-  }
+  .about__grid { grid-template-columns: 1fr; gap: 32px; }
+  .about__image-wrap { max-width: 100%; margin: 0; }
   .about__img-placeholder { aspect-ratio: 16/9; }
-  .about__badge {
-    top: -14px;
-    right: 12px;
-    width: 76px;
-    height: 76px;
-  }
-  .badge__year { font-size: 1.2rem; }
-  .badge__text { font-size: 0.6rem; }
-  .about__text { text-align: left; }
+  .about__badge { top: -14px; right: 12px; width: 72px; height: 72px; }
+  .badge__year { font-size: 1.15rem; }
+  .badge__text { font-size: 0.58rem; }
+  .about__desc { font-size: 0.95rem; }
+  .about__list li { font-size: 0.9rem; }
 
   /* ---- SERVICES ---- */
   .services__grid { grid-template-columns: 1fr; gap: 2px; }
-  .service-card__img { height: 200px; }
-  .service-card__body { padding: 24px 20px 28px; }
+  .service-card__img { height: 190px; }
+  .service-card__body { padding: 22px 18px 26px; }
+  .service-card__title { font-size: 1.15rem; }
 
-  /* ---- GALLERY ---- */
-  .gallery__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
+  /* ---- KALKULÁTOR ---- */
+  .calc__card { border-radius: var(--radius-sm); }
+  .calc__step { padding: 24px 16px; }
+  .calc__step-label { font-size: 0.95rem; margin-bottom: 18px; }
+  .calc__step-num { width: 24px; height: 24px; font-size: 0.78rem; }
+
+  .calc__types { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .calc__type { padding: 14px 8px; gap: 5px; }
+  .calc__type-icon { font-size: 1.4rem; }
+  .calc__type-name { font-size: 0.82rem; }
+  .calc__type-unit { font-size: 0.68rem; }
+
+  .calc__slider { height: 8px; }
+  .calc__slider::-webkit-slider-thumb { width: 28px; height: 28px; }
+  .calc__area-display { padding: 8px 12px; }
+  .calc__area-input { font-size: 1.2rem; width: 56px; }
+
+  .calc__qualities { grid-template-columns: 1fr; gap: 8px; }
+  .calc__quality {
+    flex-direction: row;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 12px;
   }
-  .gallery__item--large {
-    grid-column: 1 / 3;
-    aspect-ratio: 16/9;
-  }
+  .calc__q-badge { top: -10px; font-size: 0.65rem; }
+  .calc__q-name { font-size: 0.95rem; min-width: 70px; }
+  .calc__q-desc { font-size: 0.78rem; flex: 1; }
+  .calc__q-price { font-size: 0.75rem; white-space: nowrap; }
+
+  .calc__result { padding: 24px 16px; }
+  .calc__result-inner { grid-template-columns: 1fr; gap: 24px; }
+  .calc__result-price { font-size: 1.7rem; }
+  .calc__result-label { font-size: 0.72rem; }
+  .calc__result-note { font-size: 0.68rem; }
+  .calc__breakdown-row { font-size: 0.82rem; }
+  .calc__cta { font-size: 0.95rem; padding: 14px; }
+  .calc__reset { font-size: 0.8rem; padding: 10px; }
+
+  /* ---- GALÉRIA ---- */
+  .gallery__filters { gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+  .gallery__filter { padding: 10px 14px; font-size: 0.82rem; min-height: 44px; }
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
   .gallery__item { aspect-ratio: 1; }
-  /* Mobilon mindig látható a felirat */
   .gallery__label {
-    opacity: 1;
-    transform: translateY(0);
-    font-size: 0.72rem;
-    padding: 4px 8px;
-    bottom: 8px;
-    left: 8px;
-    right: 8px;
+    opacity: 1; transform: translateY(0);
+    font-size: 0.7rem; padding: 4px 8px;
+    bottom: 6px; left: 6px; right: 6px;
   }
+  .gallery__cat-tag { opacity: 1; font-size: 0.62rem; top: 6px; right: 6px; }
   .gallery__link::after { opacity: 1; }
 
-  /* ---- WHY ---- */
+  /* ---- MIÉRT MI ---- */
   .why__grid { grid-template-columns: 1fr; gap: 2px; }
-  .why-item { padding: 32px 24px; }
-  .why-item__num { font-size: 2.2rem; }
+  .why-item { padding: 28px 20px; }
+  .why-item__num { font-size: 2rem; margin-bottom: 12px; }
+  .why-item__title { font-size: 1.1rem; }
+  .why-item__desc { font-size: 0.88rem; }
 
-  /* ---- TESTIMONIALS ---- */
-  .testimonials__grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .testimonial { padding: 28px 24px; }
+  /* ---- VÉLEMÉNYEK ---- */
+  .testimonials__grid { grid-template-columns: 1fr; gap: 14px; }
+  .testimonial { padding: 24px 20px; }
+  .testimonial__text { font-size: 0.92rem; }
 
-  /* ---- CONTACT ---- */
-  .contact__grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .contact__desc { font-size: 0.95rem; }
-  .contact__form-wrap { padding: 24px 16px; }
-  /* iOS zoom megelőzése — input min. 16px */
-  .form-input {
-    font-size: 1rem;
-    padding: 14px 14px;
-  }
-  .btn--form { font-size: 1rem; padding: 16px 20px; }
+  /* ---- KAPCSOLAT ---- */
+  .contact__grid { grid-template-columns: 1fr; gap: 36px; }
+  .contact__desc { font-size: 0.92rem; margin-bottom: 28px; }
+  .contact__details { gap: 20px; }
+  .contact__item { gap: 14px; }
+  .contact__icon { width: 38px; height: 38px; flex-shrink: 0; }
+  .contact__icon svg { width: 18px; height: 18px; }
+  .contact__value { font-size: 0.9rem; }
+  .contact__form-wrap { padding: 20px 14px; border-radius: var(--radius-sm); }
+  /* iOS: 16px minimum hogy ne zoomoljon */
+  .form-input { font-size: 1rem !important; padding: 14px 12px; }
+  .form-label { font-size: 0.78rem; }
+  .form-textarea { min-height: 100px; }
+  .btn--form { font-size: 1rem; padding: 16px; }
+  .form-note { font-size: 0.7rem; }
 
   /* ---- FOOTER ---- */
   .footer__inner {
     grid-template-columns: 1fr;
-    gap: 32px;
-    padding-top: 48px;
-    padding-bottom: 48px;
+    gap: 28px;
+    padding-top: 44px;
+    padding-bottom: 44px;
   }
-  .footer__bottom-inner {
-    flex-direction: column;
-    gap: 6px;
-    text-align: center;
-  }
+  .footer__bottom-inner { flex-direction: column; gap: 6px; text-align: center; }
   .footer__bottom p { font-size: 0.72rem; }
-
-  /* ---- SECTION HEADER ---- */
-  .section__title { font-size: clamp(1.7rem, 6vw, 2.2rem); }
-  .section__subtitle { font-size: 0.95rem; }
-  .section__header { margin-bottom: 40px; }
+  .footer__tagline { font-size: 0.84rem; }
+  .footer__links a, .footer__services a { font-size: 0.85rem; margin-bottom: 8px; }
+  .footer__legal p { font-size: 0.8rem; }
 }
 
 /* =============================================
-   KIS MOBIL — max 480px
+   KIS MOBIL — 480px
    ============================================= */
 @media (max-width: 480px) {
-  .hero__title { font-size: clamp(2rem, 11vw, 2.6rem); }
-  .hero__eyebrow { font-size: 0.72rem; }
+  .section { padding: 44px 0; }
+  .hero__title { font-size: clamp(1.9rem, 11vw, 2.5rem); }
+  .hero__eyebrow { font-size: 0.7rem; letter-spacing: 0.14em; }
+  .hero__subtitle { font-size: 0.95rem; }
+  .hero__actions .btn { max-width: 100%; }
 
-  .stat__number { font-size: 2.4rem; }
-  .stat__plus { font-size: 1.4rem; }
+  .stat__number { font-size: 2.2rem; }
+  .stat__plus { font-size: 1.3rem; }
+  .stat__label { font-size: 0.68rem; }
+
+  .service-card__img { height: 160px; }
+  .service-card__title { font-size: 1.1rem; }
+
+  .calc__types { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .calc__type { padding: 12px 6px; }
+  .calc__area-input { font-size: 1.1rem; width: 48px; }
 
   .gallery__grid { grid-template-columns: repeat(2, 1fr); gap: 4px; }
 
-  .service-card__img { height: 170px; }
+  .logo-main { font-size: 0.92rem; }
+  .logo-icon { font-size: 1.3rem; }
 
-  .contact__form-wrap { padding: 20px 12px; }
+  .section__title { font-size: clamp(1.55rem, 7vw, 1.9rem); }
+  .section__header { margin-bottom: 28px; }
 
-  .logo-main { font-size: 0.95rem; }
+  .btn { padding: 13px 22px; font-size: 0.88rem; }
+  .btn--primary, .btn--ghost { min-height: 48px; }
 }
 
 /* =============================================
-   NAGYON KIS KÉPERNYŐ — max 360px
+   NAGYON KIS — 360px
    ============================================= */
 @media (max-width: 360px) {
   .container { padding: 0 12px; }
-  .hero__title { font-size: 2rem; }
-  .hero__actions .btn { max-width: 100%; }
-  .stats__grid { grid-template-columns: 1fr 1fr; }
+  .hero__title { font-size: 1.85rem; }
+  .calc__types { grid-template-columns: repeat(2, 1fr); }
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
   .stat__number { font-size: 2rem; }
-  .gallery__grid { grid-template-columns: 1fr; }
-  .gallery__item--large { grid-column: 1; }
+  .navbar__links a { font-size: 1.2rem; padding: 14px 0; }
 }

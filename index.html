@@ -12,8 +12,12 @@
   <meta name="apple-mobile-web-app-title" content="TIP-TOP-KŐ PLUS" />
   <title>TIP-TOP-KŐ PLUS Kft. | Padló- és Falburkolás</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Betűtípusok: display=swap = nem blokkol betöltéskor -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>" />
 </head>
 <body>
 
@@ -30,6 +34,7 @@
       <nav class="navbar__links" id="navLinks">
         <a href="#about">Rólunk</a>
         <a href="#services">Szolgáltatások</a>
+        <a href="#calculator">Árbecslő</a>
         <a href="#gallery">Munkáink</a>
         <a href="#why">Miért mi?</a>
         <a href="#contact" class="btn btn--nav">Kapcsolat</a>
@@ -179,6 +184,119 @@
     </div>
   </section>
 
+  <!-- ===== CALCULATOR ===== -->
+  <section class="calc section section--stone" id="calculator">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__eyebrow">Árbecslő</p>
+        <h2 class="section__title">Becsülje meg a munkát</h2>
+        <p class="section__subtitle">Néhány kattintással kap egy hozzávetőleges árat — kötelezettségek nélkül.</p>
+      </div>
+
+      <div class="calc__card">
+
+        <!-- Lépés 1: Munka típusa -->
+        <div class="calc__step" id="step1">
+          <p class="calc__step-label"><span class="calc__step-num">1</span> Milyen munkát szeretne?</p>
+          <div class="calc__types">
+            <button class="calc__type" data-type="padlo" data-labor-min="3500" data-labor-max="5500">
+              <span class="calc__type-icon">⬛</span>
+              <span class="calc__type-name">Padlóburkolás</span>
+              <span class="calc__type-unit">Ft/m²-től</span>
+            </button>
+            <button class="calc__type" data-type="fal" data-labor-min="4500" data-labor-max="7000">
+              <span class="calc__type-icon">▦</span>
+              <span class="calc__type-name">Falburkolás</span>
+              <span class="calc__type-unit">Ft/m²-től</span>
+            </button>
+            <button class="calc__type" data-type="furdoszoba" data-labor-min="6000" data-labor-max="10000">
+              <span class="calc__type-icon">🚿</span>
+              <span class="calc__type-name">Fürdőszoba</span>
+              <span class="calc__type-unit">Ft/m²-től</span>
+            </button>
+            <button class="calc__type" data-type="laminalt" data-labor-min="2500" data-labor-max="4000">
+              <span class="calc__type-icon">▬</span>
+              <span class="calc__type-name">Laminált padló</span>
+              <span class="calc__type-unit">Ft/m²-től</span>
+            </button>
+            <button class="calc__type" data-type="terasz" data-labor-min="4000" data-labor-max="6500">
+              <span class="calc__type-icon">◻</span>
+              <span class="calc__type-name">Terasz / Kültér</span>
+              <span class="calc__type-unit">Ft/m²-től</span>
+            </button>
+            <button class="calc__type" data-type="lepcso" data-labor-min="8000" data-labor-max="14000">
+              <span class="calc__type-icon">▤</span>
+              <span class="calc__type-name">Lépcsőburkolás</span>
+              <span class="calc__type-unit">Ft/fm-től</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lépés 2: Négyzetméter -->
+        <div class="calc__step calc__step--hidden" id="step2">
+          <p class="calc__step-label"><span class="calc__step-num">2</span> Mekkora a terület? <span class="calc__unit-label" id="unitLabel">m²</span></p>
+          <div class="calc__slider-wrap">
+            <input class="calc__slider" type="range" id="areaSlider" min="5" max="200" value="30" step="1" />
+            <div class="calc__slider-vals">
+              <span>5</span>
+              <div class="calc__area-display">
+                <input class="calc__area-input" type="number" id="areaInput" value="30" min="5" max="500" />
+                <span class="calc__area-unit" id="areaUnit">m²</span>
+              </div>
+              <span>200+</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lépés 3: Anyagminőség -->
+        <div class="calc__step calc__step--hidden" id="step3">
+          <p class="calc__step-label"><span class="calc__step-num">3</span> Milyen anyagminőséget szeretne?</p>
+          <div class="calc__qualities">
+            <button class="calc__quality" data-mat-min="3000" data-mat-max="6000" data-q="alap">
+              <span class="calc__q-name">Alap</span>
+              <span class="calc__q-desc">Megbízható, praktikus megoldás</span>
+              <span class="calc__q-price">3 000–6 000 Ft/m²</span>
+            </button>
+            <button class="calc__quality calc__quality--popular" data-mat-min="6000" data-mat-max="15000" data-q="kozep">
+              <span class="calc__q-badge">Legnépszerűbb</span>
+              <span class="calc__q-name">Közepes</span>
+              <span class="calc__q-desc">Szép megjelenés, jó ár-érték</span>
+              <span class="calc__q-price">6 000–15 000 Ft/m²</span>
+            </button>
+            <button class="calc__quality" data-mat-min="15000" data-mat-max="40000" data-q="premium">
+              <span class="calc__q-name">Prémium</span>
+              <span class="calc__q-desc">Márvány, nagyformátumú lapok</span>
+              <span class="calc__q-price">15 000–40 000 Ft/m²</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Eredmény -->
+        <div class="calc__result calc__step--hidden" id="calcResult">
+          <div class="calc__result-inner">
+            <div class="calc__result-left">
+              <p class="calc__result-label">Becsült összköltség</p>
+              <p class="calc__result-price" id="resultPrice">— Ft</p>
+              <p class="calc__result-sub" id="resultSub"></p>
+              <p class="calc__result-note">* Tájékoztató jellegű becslés. A pontos ár helyszíni felmérés után adható meg.</p>
+            </div>
+            <div class="calc__result-right">
+              <div class="calc__breakdown" id="breakdown"></div>
+              <a href="#contact" class="btn btn--primary calc__cta">Pontos árajánlatot kérek</a>
+              <button class="calc__reset" id="calcReset">Újraszámolom</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="calc__progress">
+          <div class="calc__progress-bar" id="calcProgress"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ===== GALLERY ===== -->
   <section class="gallery section" id="gallery">
     <div class="container">
@@ -187,80 +305,106 @@
         <h2 class="section__title">Néhány munkánkból</h2>
         <p class="section__subtitle">Minden projekt egyedi — a minőség azonban állandó.</p>
       </div>
-      <div class="gallery__grid">
-        <div class="gallery__item gallery__item--large">
+
+      <!-- Szűrő gombok -->
+      <div class="gallery__filters" id="galleryFilters">
+        <button class="gallery__filter gallery__filter--active" data-filter="minden">Minden</button>
+        <button class="gallery__filter" data-filter="furdoszoba">🚿 Fürdőszoba</button>
+        <button class="gallery__filter" data-filter="konyha">🍳 Konyha</button>
+        <button class="gallery__filter" data-filter="padlo">⬛ Padló</button>
+        <button class="gallery__filter" data-filter="terasz">☀️ Terasz</button>
+      </div>
+
+      <!-- Galéria rács -->
+      <div class="gallery__grid" id="galleryGrid">
+        <div class="gallery__item" data-cat="padlo">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6534-1-1024x768.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6534-1-1024x768.jpg" alt="Burkolási munka" loading="lazy" />
-            <span class="gallery__label">Burkolás — elkészült munka</span>
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6534-1-1024x768.jpg" alt="Padlóburkolás" loading="lazy" />
+            <span class="gallery__label">Padló — elkészült munka</span>
+            <span class="gallery__cat-tag">Padló</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="furdoszoba">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0970-1-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0970-1-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
-            <span class="gallery__label">Csempe burkolás</span>
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0970-1-768x1024.jpg" alt="Fürdőszoba csempe" loading="lazy" />
+            <span class="gallery__label">Fürdőszoba csempe</span>
+            <span class="gallery__cat-tag">Fürdőszoba</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="padlo">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6772-1-e1613058563733-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6772-1-e1613058563733-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6772-1-e1613058563733-768x1024.jpg" alt="Padlóburkolás" loading="lazy" />
             <span class="gallery__label">Padlóburkolás</span>
+            <span class="gallery__cat-tag">Padló</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="konyha">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6525-2-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6525-2-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
-            <span class="gallery__label">Falburkolás</span>
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6525-2-768x1024.jpg" alt="Konyhai falburkolás" loading="lazy" />
+            <span class="gallery__label">Konyhai falburkolás</span>
+            <span class="gallery__cat-tag">Konyha</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="furdoszoba">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0971-1-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0971-1-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
-            <span class="gallery__label">Burkolás részlet</span>
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0971-1-768x1024.jpg" alt="Fürdőszoba burkolás részlet" loading="lazy" />
+            <span class="gallery__label">Fürdőszoba — részlet</span>
+            <span class="gallery__cat-tag">Fürdőszoba</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="konyha">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0968-1-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0968-1-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_0968-1-768x1024.jpg" alt="Konyhai csempe" loading="lazy" />
             <span class="gallery__label">Konyhai csempe</span>
+            <span class="gallery__cat-tag">Konyha</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="padlo">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_5104-2-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_5104-2-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_5104-2-768x1024.jpg" alt="Fugázott járólap" loading="lazy" />
             <span class="gallery__label">Fugázott járólap</span>
+            <span class="gallery__cat-tag">Padló</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="padlo">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6771-1-e1613058569941-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6771-1-e1613058569941-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
-            <span class="gallery__label">Elkészült burkolás</span>
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6771-1-e1613058569941-768x1024.jpg" alt="Elkészült padlóburkolás" loading="lazy" />
+            <span class="gallery__label">Elkészült padló</span>
+            <span class="gallery__cat-tag">Padló</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="furdoszoba">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6868-1-678x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6868-1-678x1024.jpg" alt="Burkolási munka" loading="lazy" />
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_6868-1-678x1024.jpg" alt="Fürdőszoba burkolás" loading="lazy" />
             <span class="gallery__label">Fürdőszoba burkolás</span>
+            <span class="gallery__cat-tag">Fürdőszoba</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="terasz">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_7004-1-1024x768.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_7004-1-1024x768.jpg" alt="Burkolási munka" loading="lazy" />
+            <img src="https://profiburkolas.hu/wp-content/uploads/2021/02/IMG_7004-1-1024x768.jpg" alt="Terasz burkolás" loading="lazy" />
             <span class="gallery__label">Terasz burkolás</span>
+            <span class="gallery__cat-tag">Terasz</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="furdoszoba">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2023/01/IMG_20221004_181856-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2023/01/IMG_20221004_181856-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
-            <span class="gallery__label">Friss munka — 2022</span>
+            <img src="https://profiburkolas.hu/wp-content/uploads/2023/01/IMG_20221004_181856-768x1024.jpg" alt="Fürdőszoba felújítás" loading="lazy" />
+            <span class="gallery__label">Fürdőszoba — 2022</span>
+            <span class="gallery__cat-tag">Fürdőszoba</span>
           </a>
         </div>
-        <div class="gallery__item">
+        <div class="gallery__item" data-cat="konyha">
           <a class="gallery__link" href="https://profiburkolas.hu/wp-content/uploads/2023/01/IMG_3407-768x1024.jpg" target="_blank" rel="noopener">
-            <img src="https://profiburkolas.hu/wp-content/uploads/2023/01/IMG_3407-768x1024.jpg" alt="Burkolási munka" loading="lazy" />
-            <span class="gallery__label">Friss munka — 2023</span>
+            <img src="https://profiburkolas.hu/wp-content/uploads/2023/01/IMG_3407-768x1024.jpg" alt="Konyha burkolás" loading="lazy" />
+            <span class="gallery__label">Konyha — 2023</span>
+            <span class="gallery__cat-tag">Konyha</span>
           </a>
         </div>
       </div>
+
+      <!-- Üres állapot -->
+      <p class="gallery__empty" id="galleryEmpty" style="display:none;">Ehhez a kategóriához még nem töltöttünk fel képet.</p>
     </div>
   </section>
 
