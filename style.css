@@ -917,7 +917,13 @@ a.contact__value:hover { color: var(--gold); }
 
   /* ---- NAVBAR ---- */
   .navbar { padding: 14px 0; }
-  .navbar.scrolled { padding: 10px 0; }
+  /* backdrop-filter mobilon törné a position:fixed gyermekeket — kikapcsoljuk */
+  .navbar,
+  .navbar.scrolled {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .navbar.scrolled { padding: 10px 0; background: rgba(20,20,20,0.98); }
 
   .navbar__links {
     position: fixed;
