@@ -82,8 +82,9 @@ button { border: none; cursor: pointer; font-family: inherit; }
 .btn--nav {
   background: var(--gold);
   color: var(--dark);
-  padding: 10px 22px;
-  font-size: 0.85rem;
+  padding: 9px 18px;
+  font-size: 0.82rem;
+  white-space: nowrap;
 }
 .btn--nav:hover {
   background: var(--gold-light);
@@ -194,14 +195,15 @@ button { border: none; cursor: pointer; font-family: inherit; }
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 20px;
 }
 .navbar__links a {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: rgba(255,255,255,0.8);
   transition: color var(--trans);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 .navbar__links a:not(.btn--nav):hover { color: var(--gold); }
 .navbar__links a.nav--active { color: var(--gold); }
@@ -1274,10 +1276,9 @@ a.contact__value:hover { color: var(--gold); }
 /* Vízszintes görgetés megelőzése */
 html, body { overflow-x: hidden; max-width: 100%; }
 
-/* Érintési célpontok min. 44px */
+/* Dupla-tap zoom letiltása minden interaktív elemen */
 button, a, input[type="submit"], select {
-  min-height: 44px;
-  touch-action: manipulation; /* dupla tap zoom letiltása */
+  touch-action: manipulation;
 }
 
 /* =============================================
@@ -1305,9 +1306,16 @@ button, a, input[type="submit"], select {
   /* ---- ALAP ---- */
   .section { padding: 52px 0; }
   .container { padding: 0 16px; }
+  /* Érintési célpontok min. 44px — csak mobilon */
+  button, a { min-height: 44px; }
+  .section__eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; }
   .section__title { font-size: clamp(1.7rem, 6vw, 2.2rem); }
   .section__subtitle { font-size: 0.95rem; }
   .section__header { margin-bottom: 36px; }
+  /* Logo méretezés mobilon */
+  .logo-main { font-size: 1rem; }
+  .logo-icon { font-size: 1.4rem; }
+  .navbar__logo { gap: 8px; }
 
   /* ---- NAVBAR ---- */
   .navbar { padding: 14px 0; }
@@ -1368,6 +1376,10 @@ button, a, input[type="submit"], select {
     border: none;
     width: 100%;
     max-width: 260px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
   }
 
   .burger {
@@ -1502,6 +1514,11 @@ button, a, input[type="submit"], select {
   .testimonials__grid { grid-template-columns: 1fr; gap: 14px; }
   .testimonial { padding: 24px 20px; }
   .testimonial__text { font-size: 0.92rem; }
+  /* Idézőjel túl nagy mobilon — csökkentjük */
+  .testimonial::before { font-size: 3rem; top: 12px; right: 16px; }
+  .testimonial__name { font-size: 0.88rem; }
+  .testimonial__loc { font-size: 0.75rem; }
+  .testimonial__stars { font-size: 0.9rem; }
 
   /* ---- KAPCSOLAT ---- */
   .contact__grid { grid-template-columns: 1fr; gap: 36px; }
@@ -1529,7 +1546,8 @@ button, a, input[type="submit"], select {
   .footer__bottom-inner { flex-direction: column; gap: 6px; text-align: center; }
   .footer__bottom p { font-size: 0.72rem; }
   .footer__tagline { font-size: 0.84rem; }
-  .footer__links a, .footer__services a { font-size: 0.85rem; margin-bottom: 8px; }
+  .footer__links h4, .footer__services h4, .footer__legal h4 { margin-bottom: 14px; }
+  .footer__links a, .footer__services a { font-size: 0.85rem; margin-bottom: 8px; min-height: 36px; display: flex; align-items: center; }
   .footer__legal p { font-size: 0.8rem; }
 }
 
@@ -1537,33 +1555,97 @@ button, a, input[type="submit"], select {
    KIS MOBIL — 480px
    ============================================= */
 @media (max-width: 480px) {
-  .section { padding: 44px 0; }
-  .hero__title { font-size: clamp(1.9rem, 11vw, 2.5rem); }
-  .hero__eyebrow { font-size: 0.7rem; letter-spacing: 0.14em; }
-  .hero__subtitle { font-size: 0.95rem; }
-  .hero__actions .btn { max-width: 100%; }
 
-  .stat__number { font-size: 2.2rem; }
-  .stat__plus { font-size: 1.3rem; }
-  .stat__label { font-size: 0.68rem; }
-
-  .service-card__img { height: 160px; }
-  .service-card__title { font-size: 1.1rem; }
-
-  .calc__types { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-  .calc__type { padding: 12px 6px; }
-  .calc__area-input { font-size: 1.1rem; width: 48px; }
-
-  .gallery__grid { grid-template-columns: repeat(2, 1fr); gap: 4px; }
-
-  .logo-main { font-size: 0.92rem; }
-  .logo-icon { font-size: 1.3rem; }
-
-  .section__title { font-size: clamp(1.55rem, 7vw, 1.9rem); }
-  .section__header { margin-bottom: 28px; }
-
-  .btn { padding: 13px 22px; font-size: 0.88rem; }
+  /* ---- ALAP ---- */
+  .section { padding: 40px 0; }
+  .section__title { font-size: clamp(1.5rem, 7vw, 1.85rem); }
+  .section__eyebrow { font-size: 0.68rem; }
+  .section__header { margin-bottom: 24px; }
+  .btn { padding: 13px 20px; font-size: 0.88rem; }
   .btn--primary, .btn--ghost { min-height: 48px; }
+
+  /* ---- LOGO ---- */
+  .logo-main { font-size: 0.9rem; }
+  .logo-icon { font-size: 1.25rem; }
+  .navbar__logo { gap: 6px; }
+
+  /* ---- HERO ---- */
+  .hero { padding-bottom: 56px; }
+  .hero__content { padding-top: 64px; }
+  .hero__title { font-size: clamp(1.85rem, 11vw, 2.4rem); }
+  .hero__eyebrow { font-size: 0.68rem; letter-spacing: 0.12em; }
+  .hero__subtitle { font-size: 0.92rem; line-height: 1.6; }
+  .hero__actions .btn { max-width: 100%; padding: 15px; }
+
+  /* ---- STATS ---- */
+  .stat { padding: 18px 10px; }
+  .stat__number { font-size: clamp(1.8rem, 8vw, 2.2rem); }
+  .stat__plus { font-size: 1.2rem; }
+  .stat__label { font-size: 0.65rem; }
+
+  /* ---- ABOUT ---- */
+  .about__badge { width: 64px; height: 64px; top: -12px; right: 8px; }
+  .badge__year { font-size: 1rem; }
+  .badge__text { font-size: 0.55rem; }
+  .about__desc { font-size: 0.9rem; }
+  .about__list { margin: 20px 0 28px; }
+  .about__list li { font-size: 0.85rem; }
+
+  /* ---- SERVICES ---- */
+  .service-card__img { height: 155px; }
+  .service-card__title { font-size: 1.05rem; }
+  .service-card__desc { font-size: 0.85rem; }
+  .service-card__body { padding: 18px 16px 22px; }
+
+  /* ---- KALKULÁTOR ---- */
+  .calc__step { padding: 20px 14px; }
+  .calc__step-label { font-size: 0.9rem; }
+  .calc__types { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .calc__type { padding: 12px 6px; min-height: 80px; }
+  .calc__type-name { font-size: 0.78rem; }
+  .calc__type-icon { font-size: 1.25rem; }
+  .calc__area-input { font-size: 1rem; width: 44px; }
+  .calc__result-price { font-size: 1.5rem; }
+  .calc__breakdown-row { font-size: 0.78rem; }
+
+  /* ---- GALÉRIA ---- */
+  .gallery__filters { gap: 5px; }
+  .gallery__filter { padding: 9px 11px; font-size: 0.78rem; min-height: 40px; }
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+  .gallery__label { font-size: 0.65rem; bottom: 5px; left: 5px; right: 5px; padding: 3px 6px; }
+  .gallery__cat-tag { font-size: 0.58rem; }
+
+  /* ---- MIÉRT MI ---- */
+  .why-item { padding: 24px 16px; }
+  .why-item__num { font-size: 1.8rem; }
+  .why-item__title { font-size: 1rem; }
+  .why-item__desc { font-size: 0.85rem; }
+
+  /* ---- VÉLEMÉNYEK ---- */
+  .testimonial { padding: 20px 16px; }
+  .testimonial::before { font-size: 2.5rem; }
+  .testimonial__text { font-size: 0.88rem; }
+  .testimonial__avatar { width: 36px; height: 36px; font-size: 0.72rem; }
+
+  /* ---- KAPCSOLAT ---- */
+  .contact__grid { gap: 28px; }
+  .contact__icon { width: 34px; height: 34px; }
+  .contact__icon svg { width: 16px; height: 16px; }
+  .contact__label { font-size: 0.68rem; }
+  .contact__value { font-size: 0.85rem; }
+  .contact__form-wrap { padding: 18px 12px; }
+  .form-group { gap: 6px; }
+  .form-label { font-size: 0.72rem; }
+  .form-input { padding: 12px 10px; font-size: 1rem !important; }
+  .btn--form { padding: 14px; font-size: 0.95rem; }
+
+  /* ---- FOOTER ---- */
+  .footer__inner { gap: 24px; padding-top: 36px; padding-bottom: 36px; }
+  .footer__tagline { font-size: 0.8rem; }
+  .footer__links h4, .footer__services h4, .footer__legal h4 { font-size: 0.7rem; margin-bottom: 10px; }
+  .footer__links a, .footer__services a { font-size: 0.8rem; }
+  .footer__legal p { font-size: 0.76rem; }
+  .footer__bottom p { font-size: 0.68rem; }
 }
 
 /* =============================================
@@ -1571,9 +1653,30 @@ button, a, input[type="submit"], select {
    ============================================= */
 @media (max-width: 360px) {
   .container { padding: 0 12px; }
-  .hero__title { font-size: 1.85rem; }
-  .calc__types { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: 36px 0; }
+
+  .logo-main { font-size: 0.85rem; }
+  .logo-sub { font-size: 0.68rem; }
+
+  .hero__title { font-size: 1.75rem; }
+  .hero__subtitle { font-size: 0.88rem; }
+  .hero__actions .btn { font-size: 0.9rem; padding: 14px 12px; }
+
+  .stat__number { font-size: clamp(1.6rem, 7vw, 2rem); }
+  .stat__label { font-size: 0.6rem; }
+
+  .calc__types { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+  .calc__type { padding: 10px 4px; min-height: 72px; }
+  .calc__type-name { font-size: 0.72rem; }
+
   .gallery__grid { grid-template-columns: repeat(2, 1fr); gap: 3px; }
-  .stat__number { font-size: 2rem; }
-  .navbar__links a { font-size: 1.2rem; padding: 14px 0; }
+  .gallery__filter { padding: 8px 10px; font-size: 0.72rem; }
+
+  .navbar__links a { font-size: 1.15rem; padding: 13px 0; }
+  .navbar__links .btn--nav { max-width: 220px; font-size: 0.92rem; }
+
+  .why-item { padding: 20px 14px; }
+  .testimonial { padding: 18px 14px; }
+  .contact__form-wrap { padding: 16px 10px; }
+  .footer__inner { gap: 20px; }
 }
